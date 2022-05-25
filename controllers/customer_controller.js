@@ -38,20 +38,6 @@ customer.post('/book', async (req, res) => {
   const { firstName, lastName, age, address, city, state, reservationNumber } =
     req.body
   const { flightNumberId, seatNumberId, passengerId } = req.body
-
-  if (
-    !firstName ||
-    !lastName ||
-    !age ||
-    !address ||
-    !city ||
-    !state ||
-    !flightNumberId ||
-    !seatNumberId
-  ) {
-    res.status(400)
-    throw new Error('Please add all fields')
-  }
   try {
     const passengerInfo = await Passenger.create({
       firstName,
