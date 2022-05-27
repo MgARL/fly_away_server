@@ -1,11 +1,16 @@
 'use strict';
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('Customers', {
-      customer_id: {
+    await queryInterface.createTable('Users', {
+      user_id: {
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
+        unique: true,
+        type: DataTypes.UUID
+      },
+      role: {
+        type: DataTypes.ENUM('admin', 'customer'),
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -15,13 +20,12 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false
       },
-      password: {
+      password_digest: {
         type: DataTypes.STRING,
         allowNull: false
       },
       age: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
       },
       address: {
         type: DataTypes.STRING,
@@ -32,7 +36,8 @@ module.exports = {
         allowNull: false
       },
       state: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -44,7 +49,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Customers');
+  async down(queryInterface, DataTypes) {
+    await queryInterface.dropTable('Users');
   }
 };
