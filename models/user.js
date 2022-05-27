@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ Reservation }) {
       // define association here
+      this.hasMany(Reservation, { foreignKey: 'user_id'})
     }
   }
   User.init({
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.ENUM('admin', 'customer'),
+      defaultValue: 'customer',
       allowNull: false,
     },
     name: {

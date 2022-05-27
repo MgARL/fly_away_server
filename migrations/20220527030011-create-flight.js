@@ -1,43 +1,43 @@
 'use strict';
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('Users', {
-      user_id: {
+    await queryInterface.createTable('Flights', {
+      flight_id: {
         allowNull: false,
-        primaryKey: true,
         unique: true,
+        primaryKey: true,
         type: DataTypes.UUID
+      }, 
+      airline_id:{
+        type: DataTypes.UUID,
+        allowNull: false
       },
-      role: {
-        type: DataTypes.ENUM('admin', 'customer'),
-        defaultValue: 'customer',
-        allowNull: false,
-      },
-      name: {
+      departure: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      last_name: {
+      destination: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      password_digest: {
-        type: DataTypes.STRING,
+      departure_time: {
+        type: DataTypes.TIME,
         allowNull: false
       },
-      age: {
-        type: DataTypes.INTEGER
-      },
-      address: {
-        type: DataTypes.STRING,
+      destination_time: {
+        type: DataTypes.TIME,
         allowNull: false
       },
-      city: {
-        type: DataTypes.STRING,
+      departure_date: {
+        type: DataTypes.DATEONLY,
         allowNull: false
       },
-      state: {
-        type: DataTypes.STRING,
+      destination_date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+      },
+      flight_price: {
+        type: DataTypes.INTEGER,
         allowNull: false
       },
       createdAt: {
@@ -50,7 +50,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('Users');
+  async down(queryInterface, sequelize) {
+    await queryInterface.dropTable('Flights');
   }
 };
