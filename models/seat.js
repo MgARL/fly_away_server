@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     seat_id: {
       type: DataTypes.UUID,
       allowNull: false,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     flight_id: {
       type: DataTypes.UUID,

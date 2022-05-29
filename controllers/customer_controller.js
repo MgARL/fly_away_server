@@ -8,7 +8,7 @@ customer.get('/search', async (req, res) => {
   try {
     const { departure, destination, departureDate, numberOfSeats } = req.query
 
-    const flights = await Flight.find({
+    const flights = await Flight.findOne({
       departure,
       destination,
       departureDate,
@@ -28,7 +28,7 @@ customer.get('/search', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: error,
+      message: `wow hey there ${error}`,
     })
   }
 })

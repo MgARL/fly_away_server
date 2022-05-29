@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     reservation_id: {
       type: DataTypes.UUID,
       allowNull: false,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     user_id: {
       type: DataTypes.UUID,

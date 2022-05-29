@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
-const portNumber = process.env.PORT
+const portNumber = process.env.PORT || 3000
 
 // Middleware
 const corsOptions = {
@@ -19,6 +19,8 @@ app.use('/admin', require('./controllers/admin_controller'))
 
 const costumerController = require('./controllers/customer_controller')
 app.use('/customers', costumerController)
+
+app.use('/auth', require('./controllers/auth'))
 
 // Root
 app.get('*', (req, res) => {
