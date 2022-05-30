@@ -11,18 +11,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User, Flight, Seat }) {
       // define association here
-      this.belongsTo(User, { foreignKey: 'user_id'})
-      this.belongsTo(Flight, { foreignKey: 'flight_id'})
-      this.belongsTo(Seat, { foreignKey: 'seat_id'})
+      this.belongsTo(User, { 
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE'
+      })
+      this.belongsTo(Flight, { 
+        foreignKey: 'flight_id',
+        onDelete: 'CASCADE'
+      })
+      this.belongsTo(Seat, { 
+        foreignKey: 'seat_id',
+        onDelete: 'CASCADE'
+      })
 
     }
   }
   Reservation.init({
     reservation_id: {
-      allowNull: false,
-      primaryKey: true,
       unique: true,
-      type: DataTypes.UUID
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
     },
     user_id: {
       type: DataTypes.UUID,

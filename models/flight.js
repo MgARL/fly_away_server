@@ -10,17 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ Airline, Reservation, Seat }) {
-      this.belongsTo(Airline, {foreignKey: 'airline_id'})
-      this.hasMany(Reservation, {foreignKey: 'flight_id'})
-      this.hasMany(Seat, {foreignKey: 'flight_id'})
+      this.belongsTo(Airline, {
+        foreignKey: 'airline_id',
+        onDelete: 'CASCADE'
+      })
+      this.hasMany(Reservation, {
+        foreignKey: 'flight_id',
+        onDelete: 'CASCADE'
+      })
+      this.hasMany(Seat, {
+        foreignKey: 'flight_id',
+        onDelete: 'CASCADE'
+      })
     }
   }
   Flight.init({
     flight_id: {
-      allowNull: false,
       unique: true,
       primaryKey: true,
-      type: DataTypes.UUID
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
     },
     airline_id:{
       type: DataTypes.UUID,
