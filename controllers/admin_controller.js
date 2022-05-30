@@ -1,64 +1,68 @@
 const express = require('express')
+const crypto = require('crypto')
 const db = require('../models')
 const admin = express.Router()
-const { Flight, Passenger, Reservation, Seat } = db
 
-// ALL FLIGHT ROUTES /////////////////////////////////
+const { User, Airline, Flight, Reservation, Seat } = db 
 
-// GET ROUTE FOR ALL FLIGHTS
-admin.get('/index', async (req, res) => {
-  res.status(201).json({ message: 'Got Flights' })
+admin.post('/add-airline', async (req, res) => {
+  const { airline_name } = req.body
+
+  try {
+    const airline = await Airline.create({
+      airline_id: crypto.randomUUID(),
+      airline_name
+    })
+    res.status(200).json({
+      message: `Airline ${airline.airline_name} created`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: JSON.stringify(error),
+      message: 'Something Went Wrong!'
+    })
+  }
+
 })
 
-// CREATE A SINGLE FLIGHT ROUTE
-admin.post('/index', async (req, res) => {
-
-
-  res.status(201).json({ message: 'New flight created' })
+admin.post('/add-flight', async (req,res) => {
+  try {
+    const flight = await Flight.create({
+      flight_id: crypto.randomUUID(),
+      ...req.body
+    })
+    res.status(200).json({
+      message: `Flight from ${flight.departure} to ${flight.destination} created`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: JSON.stringify(error),
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// UPDATE FLIGHT ROUTE
-admin.post('/update-flight/:flightId', async (req, res) => {
-  const updateFlight = await findById(req.params.id).then((flight) => {
-    Seat.create(req.body)
-      .then((seat) => {
-        flight.seat.push(seat.id)
-        flight.save()
+admin.post('/add-seats', async (req, res) =>{
+   const { all_seats } = req.body
+  //  console.log(all_seats)
+   seats_with_id = []
+   if (all_seats){
+      all_seats.map(seat => {
+       seat.seat_id = crypto.randomUUID()
+       seats_with_id.push(seat)
       })
-      .catch((err) => {
-        res.status('error404')
-      })
-  })
-
-  res
-    .status(201)
-    .json({ message: `Flight number ${req.params.id} was updated` })
+   }
+  try {
+    const seats = await Seat.bulkCreate(seats_with_id, { validate: true })
+   res.status(200).json({
+     messages: `${seats.length} seats created.`
+   })
+  } catch (error) {
+    res.status(500).json({
+      error: JSON.stringify(error),
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// DELETE FLIGHT ROUTE
-admin.delete('/index/:id', async (req, res) => {
-  res
-    .status(201)
-    .json({ message: `Flight number ${req.params.id} was deleted` })
-})
-
-// ALL SEAT ROUTES /////////////////////////////////
-
-// GET ROUTE FOR ALL SEATS THAT BELONG TO A PARTICULAR FLIGHT
-admin.get('/seats/:id', async (req, res) => {
-})
-
-// CREATE A SEAT ROUTE
-admin.post('/seats', async (req, res) => {
-  res.status(201).json({ message: 'New seat created' })
-})
-
-// UPDATE SEATS ROUTE
-admin.put('/seats/:id', async (req, res) => {
-  res.status(201).json({ message: `Seat number ${req.params.id} was updated` })
-})
-
-admin.delete('/seats/:id', async (req, res) => {
-  res.status(201).json({ message: `Seat number ${req.params.id} was deleted` })
-})
 module.exports = admin

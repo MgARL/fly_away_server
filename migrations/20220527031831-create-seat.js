@@ -4,6 +4,7 @@ module.exports = {
     await queryInterface.createTable('Seats', {
       seat_id: {
         allowNull: false,
+        unique: true,
         primaryKey: true,
         type:DataTypes.UUID
       },
@@ -13,6 +14,7 @@ module.exports = {
       },
       seat_number: {
         type:DataTypes.STRING,
+        unique: true,
         allowNull: false
       },
       seat_available: {
@@ -21,11 +23,11 @@ module.exports = {
       },
       seat_type: {
         type: DataTypes.ENUM('coach', 'business','first-class'),
-        defaultValue: 'coach',
+        defaultValue: 'coach'
       },
       seat_upcharge: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

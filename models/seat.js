@@ -16,17 +16,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Seat.init({
     seat_id: {
-      type: DataTypes.UUID,
       allowNull: false,
       unique: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.UUID
     },
     flight_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: false
     },
     seat_number: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false
     },
     seat_available: {
@@ -35,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     seat_type: {
       type: DataTypes.ENUM('coach', 'business','first-class'),
-      defaultValue: 'coach',
+      defaultValue: 'coach'
     },
     seat_upcharge:  {
       type: DataTypes.INTEGER,
-      allowNull: false
+      defaultValue: 0
     }
   }, {
     sequelize,

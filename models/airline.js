@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Airline.init({
     airline_id:{
-      type: DataTypes.UUID,
       allowNull: false,
       unique: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.UUID
     },
     airline_name: {
       type: DataTypes.STRING,

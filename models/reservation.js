@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Reservation.init({
     reservation_id: {
-      type: DataTypes.UUID,
       allowNull: false,
+      primaryKey: true,
       unique: true,
-      primaryKey: true
+      type: DataTypes.UUID
     },
     user_id: {
       type: DataTypes.UUID,

@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Flight.init({
     flight_id: {
-      type: DataTypes.UUID,
       allowNull: false,
       unique: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.UUID
     },
     airline_id:{
       type: DataTypes.UUID,

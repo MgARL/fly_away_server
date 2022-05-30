@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init({
     user_id: {
-      type: DataTypes.UUID,
       allowNull: false,
       unique: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.UUID
     },
     role: {
       type: DataTypes.ENUM('admin', 'customer'),

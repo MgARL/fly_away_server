@@ -4,8 +4,8 @@ module.exports = {
     await queryInterface.createTable('Users', {
       user_id: {
         allowNull: false,
-        primaryKey: true,
         unique: true,
+        primaryKey: true,
         type: DataTypes.UUID
       },
       role: {
