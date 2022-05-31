@@ -3,10 +3,10 @@ module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('Airlines', {
       airline_id: {
-        allowNull: false,
         unique: true,
         primaryKey: true,
-        type: DataTypes.UUID
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       },
       airline_name: {
         type: DataTypes.STRING,

@@ -11,15 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Reservation }) {
       // define association here
-      this.hasMany(Reservation, { foreignKey: 'user_id'})
+      this.hasMany(Reservation, { 
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE'
+      })
     }
   }
   User.init({
     user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
       unique: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
     },
     role: {
       type: DataTypes.ENUM('admin', 'customer'),

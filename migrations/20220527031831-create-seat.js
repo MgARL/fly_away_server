@@ -3,16 +3,23 @@ module.exports = {
   async up(queryInterface,DataTypes) {
     await queryInterface.createTable('Seats', {
       seat_id: {
-        allowNull: false,
+        unique: true,
         primaryKey: true,
-        type:DataTypes.UUID
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       },
       flight_id: {
         type:DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Flights',
+          key: 'flight_id'
+        }
       },
       seat_number: {
         type:DataTypes.STRING,
+        unique: true,
         allowNull: false
       },
       seat_available: {
@@ -21,11 +28,11 @@ module.exports = {
       },
       seat_type: {
         type: DataTypes.ENUM('coach', 'business','first-class'),
-        defaultValue: 'coach',
+        defaultValue: 'coach'
       },
       seat_upcharge: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

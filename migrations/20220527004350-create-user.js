@@ -3,10 +3,10 @@ module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('Users', {
       user_id: {
-        allowNull: false,
-        primaryKey: true,
         unique: true,
-        type: DataTypes.UUID
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       },
       role: {
         type: DataTypes.ENUM('admin', 'customer'),

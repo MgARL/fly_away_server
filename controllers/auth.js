@@ -6,13 +6,13 @@ const jwt = require('json-web-token')
 
 const { User } = db
 
-// pwword_diges = await bcrypt.hash(pw, 12)
+// password_digest = await bcrypt.hash(pw, 12)
 auth.post('/sign-up', async (req,res) => {
     let  { password, ...rest } = req.body
     try {
         const user = await User.create({
             ...rest,
-            user_id: await crypto.randomUUID(),
+            user_id: crypto.randomUUID(),
             password_digest: await bcrypt.hash(password, 12),
             createdAt: new Date(),
             updatedAt: new Date()

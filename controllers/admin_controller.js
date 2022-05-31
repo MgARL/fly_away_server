@@ -1,64 +1,175 @@
 const express = require('express')
 const db = require('../models')
 const admin = express.Router()
-const { Flight, Passenger, Reservation, Seat } = db
 
-// ALL FLIGHT ROUTES /////////////////////////////////
+const { User, Airline, Flight, Reservation, Seat } = db 
 
-// GET ROUTE FOR ALL FLIGHTS
-admin.get('/index', async (req, res) => {
-  res.status(201).json({ message: 'Got Flights' })
+// Add Routes
+admin.post('/add-airline', async (req, res) => {
+  const { airline_name } = req.body
+
+  try {
+    const airline = await Airline.create({
+      airline_name
+    })
+    res.status(200).json({
+      message: `Airline ${airline.airline_name} created`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
+
 })
 
-// CREATE A SINGLE FLIGHT ROUTE
-admin.post('/index', async (req, res) => {
-
-
-  res.status(201).json({ message: 'New flight created' })
+admin.post('/add-flight', async (req,res) => {
+  try {
+    const flight = await Flight.create({
+      ...req.body
+    })
+    res.status(200).json({
+      message: `Flight from ${flight.departure} to ${flight.destination} created`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// UPDATE FLIGHT ROUTE
-admin.post('/update-flight/:flightId', async (req, res) => {
-  const updateFlight = await findById(req.params.id).then((flight) => {
-    Seat.create(req.body)
-      .then((seat) => {
-        flight.seat.push(seat.id)
-        flight.save()
-      })
-      .catch((err) => {
-        res.status('error404')
-      })
-  })
-
-  res
-    .status(201)
-    .json({ message: `Flight number ${req.params.id} was updated` })
+admin.post('/add-seats', async (req, res) =>{
+   const { all_seats } = req.body
+  try {
+    const seats = await Seat.bulkCreate(all_seats, { validate: true })
+   res.status(200).json({
+     messages: `${seats.length} seats created.`
+   })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// DELETE FLIGHT ROUTE
-admin.delete('/index/:id', async (req, res) => {
-  res
-    .status(201)
-    .json({ message: `Flight number ${req.params.id} was deleted` })
+// Update Routes
+admin.put('/update-airline', async (req,res) =>{
+  const { airline_name, airline_id } = req.body
+  try {
+    Airline.update({ airline_name }, {
+      where:{
+        airline_id
+      }
+    })
+    res.status(200).json({
+      message: `Name has been changed to ${airline_name}`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// ALL SEAT ROUTES /////////////////////////////////
-
-// GET ROUTE FOR ALL SEATS THAT BELONG TO A PARTICULAR FLIGHT
-admin.get('/seats/:id', async (req, res) => {
+admin.put('/update-flight', async (req,res) => {
+  const { flight_id, ...rest } = req.body
+  try {
+    await Flight.update({ ...rest }, {
+      where: {
+        flight_id
+      }
+    })
+    res.status(200).json({
+      message: `Flight Has been Updated`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// CREATE A SEAT ROUTE
-admin.post('/seats', async (req, res) => {
-  res.status(201).json({ message: 'New seat created' })
+admin.put('/update-seat', async (req,res) => {
+  const { seat_id, ...rest } = req.body
+  try {
+      await Seat.update({...rest}, {
+      where:{
+        seat_id
+      }
+    })
+    res.status(200).json({
+      message: `Seat has been updated`
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-// UPDATE SEATS ROUTE
-admin.put('/seats/:id', async (req, res) => {
-  res.status(201).json({ message: `Seat number ${req.params.id} was updated` })
+// Delete Routes
+admin.delete('/remove-user', async (req, res) => {
+  const { user_id } = req.body
+  try {
+    await User.destroy({
+      where: {
+        user_id
+      }
+    })
+    res.status(200).json({
+      message: 'Successfully Deleted'
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
 
-admin.delete('/seats/:id', async (req, res) => {
-  res.status(201).json({ message: `Seat number ${req.params.id} was deleted` })
+admin.delete('/remove-flight', async (req,res) =>{
+  const { flight_id } = req.body
+  try {
+    await Flight.destroy({
+      where: {
+        flight_id
+      } 
+    })
+    res.status(200).json({
+      message: 'Successfully Deleted'
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
 })
+
+admin.delete('/remove-airline', async (req,res) =>{
+  const { airline_id } = req.body
+  try {
+    await Airline.destroy({
+      where: {
+        airline_id
+      }
+    })
+    res.status(200).json({
+      message: 'Successfully Deleted'
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: 'Something Went Wrong!'
+    })
+  }
+})
+
+
 module.exports = admin

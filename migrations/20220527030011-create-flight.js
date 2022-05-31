@@ -3,14 +3,19 @@ module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('Flights', {
       flight_id: {
-        allowNull: false,
         unique: true,
         primaryKey: true,
-        type: DataTypes.UUID
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       }, 
       airline_id:{
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Airlines',
+          key: 'airline_id'
+        }
       },
       departure: {
         type: DataTypes.STRING,
