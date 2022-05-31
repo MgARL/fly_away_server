@@ -10,7 +10,12 @@ module.exports = {
       },
       flight_id: {
         type:DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Flights',
+          key: 'flight_id'
+        }
       },
       seat_number: {
         type:DataTypes.STRING,

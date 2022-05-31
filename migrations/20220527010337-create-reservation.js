@@ -10,15 +10,30 @@ module.exports = {
       },
       user_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'user_id'
+        }
       },
       flight_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Flights',
+          key: 'flight_id'
+        }
       },
       seat_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Seats',
+          key: 'seat_id'
+        }
       },
       createdAt: {
         allowNull: false,
