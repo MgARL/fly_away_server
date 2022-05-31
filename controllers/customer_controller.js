@@ -1,25 +1,25 @@
 const customer = require('express').Router()
 const db = require('../models')
 
-const { Flight, Passenger, Reservation, Seat } = db
+const { Airline, Seat, Flight, User, Reservation } = db
 
 // Search Flights GET
 customer.get('/search', async (req, res) => {
   try {
-    const { departure, destination, departureDate, numberOfSeats } = req.query
+    const { departure, destination, departure_date} = req.query
 
-    const flights = await Flight.findOne({
-      departure,
-      destination,
-      departureDate,
+    const flights = await Flight.findAll({
+      where:{
+        departure,
+        destination,
+        departure_date, 
+      }
     })
-      .where('totalSeats')
-      .gte(numberOfSeats)
 
     if (flights.length > 0) {
       res.status(200).json({
         message: 'Flights Found',
-        flights: flights,
+        flights,
       })
     } else {
       res.status(404).json({
@@ -28,8 +28,48 @@ customer.get('/search', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: `wow hey there ${error}`,
+      error,
+      message: `something went wrong`,
     })
+  }
+})
+
+customer.get('/get-seats', async (req,res) => {
+  const { flight_id } = req.query
+  try {
+    const seats = await Seat.findAll({
+      where: {
+        flight_id,
+        seat_available: true
+      }
+    })
+    res.status(200).json({
+      message: 'Seats Found',
+      seats
+    })
+  } catch (error) {
+    res.status(500).json({
+      error,
+      message: `something went wrong`,
+    })
+  }
+})
+
+customer.get('/get-airline', async (req, res) => {
+  const { airline_id } = req.query
+  try {
+    const airline = await Airline.findOne({
+      attributes: ['airline_name'],
+      where:{
+        airline_id
+      }
+    })
+    res.status(200).json({
+      message: 'Airline Found',
+      airline
+    })
+  } catch (error) {
+    
   }
 })
 

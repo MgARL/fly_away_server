@@ -2,7 +2,7 @@ const express = require('express')
 const db = require('../models')
 const admin = express.Router()
 
-const { User, Airline, Flight, Reservation, Seat } = db 
+const { User, Airline, Flight, Seat } = db 
 
 // Add Routes
 admin.post('/add-airline', async (req, res) => {
